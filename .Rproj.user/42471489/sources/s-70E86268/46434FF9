@@ -1,0 +1,24 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1590020090540.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "46434FF9",
+    "lastKnownWriteTime" : 1590020124,
+    "last_content_update" : 1590020124363,
+    "path" : "C:/Users/miguel/R_Projects/IS_RecommSystems/RecommSystems.R",
+    "project_path" : "RecommSystems.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

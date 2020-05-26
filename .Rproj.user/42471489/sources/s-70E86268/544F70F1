@@ -1,0 +1,27 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1590020190485.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2218484219",
+    "id" : "544F70F1",
+    "lastKnownWriteTime" : 1590454698,
+    "last_content_update" : 1590454698487,
+    "path" : "C:/Users/miguel/R_Projects/IS_RecommSystems/RecommSystems.Rmd",
+    "project_path" : "RecommSystems.Rmd",
+    "properties" : {
+        "chunk_output_type" : "inline",
+        "cursorPosition" : "5,8",
+        "scrollLine" : "0",
+        "tempName" : "Untitled1"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}
