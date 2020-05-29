@@ -58,6 +58,7 @@ nlevels(rating_UserIDs)
 # So here we are talking about 138 users, the UserID increments from U1001 to U1138
 # This can also be noticed looking at the Data window on the right of RStudio
 
+
 # Know, for clarity also, we will extract the number of unique placeID
 # We noticed that placeID is not a factor but a numerical value, this does not make sense
 # since we can not have fractional placeID and they must be taken as categorical. 
@@ -147,7 +148,7 @@ examplePlaceID <- intersect(commonPlaceIDs, z$placeID)[1]  # Extracting the firs
 filter(rating, placeID == examplePlaceID)  # So, we have a total of 10 votes, obviosly from different users
 
 #Furthermore, from lets focus on a specific userID-PlaceID vote
-examplePair <- filter(rating, placeID == examplePlaceID)[1,1:2]
+examplePair <- filter(rating, placeID == examplePlaceID)[1,1:3]
 examplePair
 exampleUserID <- (examplePair[1])
 
@@ -264,7 +265,7 @@ barplot(height = table(places$placeID)) # This plot is useful, it shows a nice r
 # Graphicall, we can aslo observe that it seems to be a mean value of ~ 5 ratings per place, lets get this number right
 
 # install.packages('plyr')
-# library('dplyr')
+library('plyr')
 t <- count(places, 'placeID')
 sprintf("Average votes per placeID: %s", mean(t$freq))
 # Ok, we know that this is a categorical value, however, the number of votes per restaurant is numerical, lets analyze it a bit
