@@ -7,17 +7,32 @@ de Monterrey Campus Guadalajara by Ph.D. Luis Eduardo Falcón Morales.
 ### Prerequisites ###
 
 * R
+* Web browser
 
 ### Overview ###
 
 This project analyzes the [data](https://archive.ics.uci.edu/ml/datasets/Restaurant+%26+consumer+data)
-from the IC Irvine Machine Learning Repository.
+from the IC Irvine Machine Learning Repository. This data can also be found
+under the RCdata folder of this repository.
 
-The project follows the steps described in the [Instructions](https://github.com/miguelAvina1/Recoommender-Systems/blob/master/Instructions/Tarea_Sistemas_de_Recomendacion.pdf)
+The project follows the steps described in the [Instructions](https://github.com/miguelAvina1/Recommender-Systems/tree/master/Instructions/Tarea_Sistemas_de_Recomendacion.pdf)
  provided.
 
- **RecommSystems.Rmd** is the resulting notebook describing each step of the
- homework along with the R instructions used.
+*  **"RecommSystems.Rmd"** is an R notebook describing each step of the
+ homework along with the R instructions used. We created this file to help the
+ reader follow our rationale and the approaches we took while doing this exercise.
+ It also describes assumptions and our interpretations to the results.
+
+*  **"RecommSystems.nb.html"** is the compiled version of the .Rmd file ready to be
+ read in any browser or html viewer.
+
+*  **"RecommSystems.R"** is the R script for this exercise. This file might be
+ useful to have a more compact view of the code. Comments for most of the
+ sections are provided. However, we strongly suggest to read RecommeSystems.Rmd
+ for broader explanations.
+
+* **"IS_RecommSystem.Rproj"** is the R-Studio project.
+
 
 * * *
 

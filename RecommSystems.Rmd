@@ -1,9 +1,39 @@
 ---
-title: "Recommender Systems"
+title: "Recommender Systems Homework" 
 output: html_notebook
 ---
 
-** Hello
+
+## Intelligent systems <img src="Images/tecnologico-de-monterrey-blue.png" alt="Tec Logo" width="200" style="float:right"/>
+#### Date: June 3rd, 2020 
+<hr>
+### Professor:
+#### PhD. Luis Eduardo Falcón 
+### Authors:
+#### Miguel Aviña &nbsp;- &nbsp; A01227898
+#### Arturo Perez &nbsp;- &nbsp; A01234567
+
+<hr>
+
+### Dataset description
+For this exercise, we will be using three files:
+
+1. **chefmozcuisine.csv:** 
+    a. Instances: 916
+    b. Attributes: 2
+<br><br>
+1. **geoplaces2.csv:**
+    a. Instances: 130
+    b. Attributes: 21
+<br><br>
+1. **rating_final.csv:**
+    a. Instances: 1161
+    b. Attributes: 5
+
+Please refer to the complete [description](RCdata/README) for more information regarding each particular attribute.
+<hr>
+
+
 
 This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
 
