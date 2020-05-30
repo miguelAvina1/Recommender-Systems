@@ -443,7 +443,7 @@ levels(places$city)  # Finally
 # Then we must enable the google APIs for maps which will generate an API key which we used to get
 # the required information. 
 # Once we have the private key, we tell ggmap about this key using:
-register_google(key = "AIzaSyAua4zWcoxnEr787RtWg5xnu7Dk4-0vDT4")
+register_google(key = "nelprro")
 # This key must be kept private and not shared because googl has billing credit card so anyone could
 # do bad thing to your account. We recommedn to secure your private key to be used only from a certain IP
 
