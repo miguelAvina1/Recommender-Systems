@@ -36,7 +36,7 @@ sprintf("Figure3. First entries of cuisine")
 # 1. Some entries of the 'city' attribute refers to same cities with different notation. 
 #    E.g: s.l.p and San Luis Potosi. We might consider removing this attribute or
 #    unifying same places with a specific name.
-# 2. name attribute listed the natural human-readble name of the restaurants. 
+# 2. 'name' attribute listed the natural human-readble name of the restaurants. 
 #    Further analysis using this kind of entry could be problematic. We might consider
 #    removing this attribute and kept only with placeID.
 
@@ -105,7 +105,7 @@ sprintf("Intersection between placeID and cuisine: %s",nlevels(commonPlaceIDs))
 
 n_occur <- data.frame(table(cuisine$placeID)) # Getting frequencies of each factor (placeID)
 n_occur <- n_occur[order(-n_occur$Freq),]
-head(n_occur[n_occur$Freq > 1,])  # here we can see the most repeated entries, one single placeID have 9 diff, cuisines!
+head(n_occur[n_occur$Freq > 1,])  # here we can see the most repeated entries, one single placeID have 9 diff. cuisines!
 
 # Lets look at some of these repeated entries
 cuisine[cuisine$placeID %in% n_occur$Var1[n_occur$Freq > 1],][1:10,]
@@ -113,7 +113,7 @@ cuisine[cuisine$placeID %in% n_occur$Var1[n_occur$Freq > 1],][1:10,]
 # Just for curiosity, we will observe the placeID with more assigned cuisines in this dataset
 filter(cuisine, placeID == n_occur$Var1[1])  
 
-# COnclusion: each restaurant have more than one cuisine related to it.
+# Conclusion: each restaurant have more than one cuisine related to it.
 
 
 
@@ -122,7 +122,7 @@ filter(cuisine, placeID == n_occur$Var1[1])
 
 
 
-# P. Ej si mergeamos geoPlaces and ratings, we are just adding the name to each entry, since we have name for ALL placeIDs
+# If we merge geoPlaces and ratings, we will be just adding the name to each entry, since we have name for ALL placeIDs
 places <- merge(rating, geoPlaces, by="placeID") # And we end up with 1161 entries, everything good here!
 
 # This is a quick summary of what we know so far:
