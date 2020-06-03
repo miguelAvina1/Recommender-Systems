@@ -162,6 +162,7 @@ RStudio provides an easy way of visualizing the data we are handling. For each d
 
 ```{r}
 n_occur <- data.frame(table((geoPlaces$name)))
+colnames(n_occur) <- c("Restaurant_name", "Freq")
 n_occur[n_occur$Freq > 1,]
 ```
 <center>**Figure 5. Repeated restaurant**</center>
@@ -169,7 +170,7 @@ n_occur[n_occur$Freq > 1,]
 <br>
 We could see that Gorditas Dona Tota is repeated, this might not be interesting but it is good to know to avoid any misinterpretation in the future.
 ```{r}
-geoPlaces[geoPlaces$name %in% n_occur$Var1[n_occur$Freq > 1],]
+geoPlaces[geoPlaces$name %in% n_occur$Restaurant_name[n_occur$Freq > 1],]
 ```
 <center>**Figure 6. Information about the repeated restaurant**</center>
 <br>
@@ -203,6 +204,7 @@ We will filter the repeated placeID's with more than one occurence in *cuisine* 
 ```{r}
 n_occur <- data.frame(table(cuisine$placeID))
 n_occur <- n_occur[order(-n_occur$Freq),]
+colnames(n_occur) <- c("placeID", "Freq")
 head(n_occur[n_occur$Freq > 1,])
 ```
 <center>**Figure 8. Frequencies of most repeated restaurants**</center>
@@ -210,7 +212,7 @@ head(n_occur[n_occur$Freq > 1,])
 <br>
 The table before showed us that there are restaurants that appears more than two times, even nine times in the *cuisine* dataframe. We will have a look of some of the repeated entries in the dataset:
 ```{r}
-cuisine[cuisine$placeID %in% n_occur$Var1[n_occur$Freq > 1],][1:10,]
+cuisine[cuisine$placeID %in% n_occur$placeID[n_occur$Freq > 1],][1:10,]
 ```
 <center>**Figure 9. Repeated entries in cuisine dataframe**</center>
 <br>
@@ -218,7 +220,7 @@ From the previous table we now have an understanding on how the data is listed. 
 <br>
 Let's have a look of the most repeated restaurant in *cuisine*:
 ```{r}
-filter(cuisine, placeID == n_occur$Var1[1])  
+filter(cuisine, placeID == n_occur$placeID[1])  
 ```
 <center>**Figure 10. Most repeated placeID in cuisine**</center>
 <br>
@@ -264,7 +266,7 @@ We will get one placeID to focus on. We will choose a PlaceID that exists in bot
 <br><br>
 Getting all placeIDs' with more than one cuisine assigned to them.
 ```{r}
-z <-  cuisine[cuisine$placeID %in% n_occur$Var1[n_occur$Freq > 1],]
+z <-  cuisine[cuisine$placeID %in% n_occur$placeID[n_occur$Freq > 1],]
 ```
 <br><br>
 Extracting the first observation for reference
@@ -400,7 +402,7 @@ representation of the number of occurences for each placeID, that is, the popula
 <br>
 
 ```{r}
-barplot(height = table(places$placeID))
+barplot(height = table(places$placeID), xlab = "placeID", ylab = "Ratings received")
 ``` 
 <center>**Figure 19. Barplot of number of occurences for each placeID**</center>
 <br>
@@ -430,7 +432,7 @@ boxplot(t$freq)
 <br>
 We'll do the same analysis for this variable as we did for placeID because they are fair similar variables.
 ```{r}
-barplot(height = table(places$userID))
+barplot(height = table(places$userID), xlab = "userID", ylab = "# of places rated")
 ```
 <center>**Figure 21. Bar plot of number of places an user has rated**</center>
 <br>
@@ -464,13 +466,13 @@ Rating was imported as a numerical variable. If we check the dataframe using RSt
 <br><br>
 However, lets assume we have a significantly larger dataset and manually inspecting the data from the dataframe wouldn't be feasible. Then, we would start by plotting the rating as histogram (Fig. 23). After looking at this representation we would be sure that there are only three levels, so a conversion to factor must be done. Even if we would have decided to use a density plot (Fig. 24) instead of a bar plot, we could have also known that there are only three levels in the data. These examples are provided to demonstrate that it is not necessary to look directly into the observations of the dataframe to know if a variable must be converted to factor.
 ```{r}
-hist(places$rating)
+hist(places$rating, xlab = 'Rating', main = 'Histogram of "Rating"')
 ```
 <center>**Figure 23. Histogram of rating**</center>
 <br>
 <br>
 ```{r}
-plot(density(places$rating))
+plot(density(places$rating), main = "Density plot for 'rating'")
 ```
 <center>**Figure 24. Density plot of rating**</center>
 <br>
@@ -541,7 +543,7 @@ From Fig. 27 we observe that most of the places are located in San Luis Potosi a
 <br>
 Now, we will do the same analysis as we did for placeID and userID.
 ```{r}
-barplot(height = table(places$city)) 
+barplot(height = table(places$city), las=2) 
 ```
 <center>**Figure 28. Barplot of 'city' variable**</center>
 <br>
@@ -631,7 +633,7 @@ plot(places$longitude, places$latitude)
 <br>
 This variable was imported as a categorical (factor) variable, so we didn't do any modification to it. We will perfom a similar analysis as we did for placeID and UserID.
 ```{r}
-barplot(height = table(places$cuisine))
+barplot(height = table(places$cuisine), las=2)
 ```
 **"Figure 35.Graphic of cuisine"**
 <br>
