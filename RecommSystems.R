@@ -132,7 +132,7 @@ places <- merge(rating, geoPlaces, by="placeID") # And we end up with 1161 entri
 # 4. In cuisine, some placeIDs have more than one cuisine linked to it.
 
 
-# So, finally, to create the daaframe needed (recall that to have a dataframe, we need the same number of observation (rows) in each variable)
+# So, finally, to create the dataframe needed (recall that to have a dataframe, we need the same number of observation (rows) in each variable)
 # we will:
 # Merge info from geoPlaces and rating final using placeID as pivot. This is translated to adding the place's additional information:
 # name, city, latitude and logitud.
@@ -183,14 +183,14 @@ filter(z, userID ==  exampleUserID[1,1])
 # So, placeID has just increase its popularity by 3. Just because it was saved with 3 different cuisines.
 
 
-# How to preserve cuisine information without modifyint the ratings and adding these extra votes can be done in 
+# How to preserve cuisine information without modifying the ratings and adding these extra votes can be done in 
 # many different ways. We will focus on doing what we will need for this homework, however, it might not be the
-# best solution if further analysis would be made with this cuisine information. THe homework only asks what is 
+# best solution if further analysis would be made with this cuisine information. The homework only asks what is 
 # the kind of food of the 10 most popular restaurants. So we are just going to merge placeIDs with more than one 
 # level into a single, new level. FOr example, taking the last table, placeID will be combined into:
 # placeID   cuisine
 # 500       Mexican_Familiar_Tacos.
-# We also took this apporach because there are other levels already with this syntax as: Bar_Pub_Brewery.
+# We also took this approach because there are other levels already with this syntax as: Bar_Pub_Brewery.
 
 # we start by keeping just the placeIDs from cuisine we are interested (the 130 listed in geoPlaces):
 cuisine <- filter(cuisine, placeID %in% commonPlaceIDs)  # We end up with 112 obs
@@ -217,7 +217,7 @@ rm(merged_Cuisines)
 rm(currentPlaceID)
 # So we have a useful cuisine data for the places we are analyzing.
 # By visualizing the data, we came across a specific case were we merged 'bar' with 'bar_Pub_brewery', leading to 'bar_bar_pub_brewery'
-# for this specific case we will replace bar_bar_pub_brewery to just bar_pub_brewery. TODO OR FUTURE WORK BC FUCK IT
+# for this specific case we will replace bar_bar_pub_brewery to just bar_pub_brewery.
 
 # now lets just merge this data with the rest
 places_drop <- merge(places, cuisine, by="placeID") # If we do this, we will lost all observations for which we don't have cuisine info
@@ -236,9 +236,11 @@ head(places)
 summary(places)
 
 
-# 2. Realizar una análisis descriptivo de las variables e indica si existen datos perdidos en
-# algunas de ellas. De ser así, realiza un análisis para determinar y justificar la decisión
-# que tomes sobre dichos datos perdidos.
+#Realize a descriptive analysis of the variables and indicate if there are missing data in 
+#any of them. If so, realize an analysis to determine and justify the decision you take 
+#regarding those missing data.
+
+
 
 # placeID
 # This variable was numeric and we already changed it to factor because it is actually a qualitative
@@ -260,8 +262,8 @@ summary(t$freq)  # We are going to advance a bit, but from here we can see that 
 # with less votes have just 3
 
 boxplot(t$freq)  # From here we know that there are some atipical values, this atipical values could be seen as 
-# outstanding (or popular) restaurants. We are not going to do anything with this info bcause removing it does not make sense.
-# I think we can not get anything else from this variable
+# outstanding (or popular) restaurants. We are not going to do anything with this info because removing it does not make sense.
+# We think we can not get anything else from this variable.
 
 
 
@@ -269,19 +271,19 @@ boxplot(t$freq)  # From here we know that there are some atipical values, this a
 # This was already a categorical (factor) variable, so we didn't do any modification
 # We'll do the same analysis for this variable as we did for placeID becuase they are fair similar variables
 barplot(height = table(places$userID)) 
-# GRaphically, we are observing the number of places each user has rated. It doesn't show too uncommon users, 
+# Graphically, we are observing the number of places each user has rated. It doesn't show too uncommon users, 
 # altough there are some large bars, they doesn't seem as different as those from places
 t <- count(places, 'userID')
 sprintf("Average places rated per User: %s", mean(t$freq))
 summary(t$freq)  # The info of places and userID is quite similar.
 boxplot(t$freq) # And here we observer what we mentioned before, there are not uncommon users: Nobody rated too much
-# or too little to become an outlier
+# or too little to become an outlier.
 
 # Rating
 # Rating was imported as numerical. If we check the dataframe using RStudio, we can manually observe that
 # there is not more than 3 values: 0, 1, 2 . So turning it into categorical (factor) would be better
 # However, lets assume we have a significantly larger dataset and visually inspecting the data woudln't be feasible
-# Then, we would start by plotting the rating as histogram
+# Then, we would start by plotting the rating as histogram.
 hist(places$rating)
 # From here, it is obvious that we have just three values
 plot(density(places$rating))
@@ -331,7 +333,7 @@ prop.table(table(places$city))
 
 # Now we just do the same analisis as placeID/userID
 barplot(height = table(places$city)) 
-# GRaphically, we are observing the number of places each user has rated. It doesn't show too uncommon users, 
+# Graphically, we are observing the number of places each user has rated. It doesn't show too uncommon users, 
 # altough there are some large bars, they doesn't seem as different as those from places
 t <- count(places, 'city')
 # It wouldn't be useful to get the average since we can graphically see that it will not give a good info.
@@ -362,7 +364,7 @@ plot(density(places$longitude, na.rm = TRUE))  # Here we have 4 'peaks', so ther
 
 plot(places$longitude, places$latitude)  # Now we can easily observe three main cumulus, but we have 5 different cities (and 1 undefined)
 # Now, let's get context. Cuernavaca is a city which adjoints Juitepec, that's why they will be seen as a main cumulous. 
-# And Soledad, 9soledad de Graciano Sanchez) is also adjacent to San Luis Potosi, that's why those two merges in one single main cumulus
+# And Soledad, (soledad de Graciano Sanchez) is also adjacent to San Luis Potosi, that's why those two merges in one single main cumulus
 # I think this kind of analysis is more suitable for this information, rather than mean, quartile, etc.
 # Furthermore, if we 'zoom in' we can actually observe the two comulus of juitepec and cuernavaca
 
@@ -381,8 +383,9 @@ t[which(t$freq %in% outvals),]
 
 
 
-# realiza un análisis para determinar y justificar la decisión
-# que tomes sobre dichos datos perdidos.
+#Perform an analysis to determine and justify the decision you make about such missing data. 
+#For the case of missing data in the ‘city’ variable, you could research about at least the packages “revgeo” or “ggmap” from R to retreive the city name using latitude and longitude information.
+
 # Ok so we have missing data in city (which came with the dataset since we imported it) and 
 # missing data in cuisine, that we added when merging cuisine data. NOTE that we could end without missing 
 # data in this variable if we haven't added the merge(places, cuisine, by="placeID", all=TRUE) 'all=TRUE' 
@@ -445,12 +448,12 @@ register_google(key = "AIzaSyD4mKmiXYdtE9xALBocEVu_Tl15a4iEW4I")
 places$GG_result <- 'Not compared'
 for (i in 1:length(places$city)) {
   #
-  # SO, FOR GG MAP, GGMAP returns a list with all posible addresses it found. However the structure is NOT the same for each
+  # So, ggmaps returns a list with all posible addresses it found. However the structure is NOT the same for each
   # address it returns. So, we can not search of a given element inside the lists of lists it returns. We would need to use another 
   # approach. One non-efficient but useful approach would be to loop inside all the info we get when calling revgeocode to search
   # for any coincidence to the data we retrieved from RevGeo, if we find it, then we can be sure we get the correct city
   # using revgeo. Otherwise, we would need to do a manual inspection of the data received from revgeocode
-  # The search would be basically a deep-first search
+  # The search would be basically a deep-first search.
   if (places$placeID[i] %in% undef_cities$placeID) {   # We are just going to comprobate with those cities that were undefined before
     google_result <- revgeocode(c(places$longitude[i], places$latitude[i]), output = "all")$results
     found <- FALSE
@@ -466,7 +469,7 @@ for (i in 1:length(places$city)) {
         long_name <- gsub("[^a-z]","",long_name) 
         short_name <- as.character(lapply(as.character(address_comp[[k]]$short_name), tolower))
         short_name <- gsub("[^a-z]","",short_name)
-        # We are not going to compae if the compare_city is at least substring of the google's result
+        # We are not going to compare if the compare_city is at least substring of the google's result
         # We are not comparing it letter to letter because we found that google returns 'Soledad de Graciano Sanchez'
         # instead of just 'Soledad', which is the name of the city we got from revgeo. Therefore, comparing it using the
         # '==' operator will return FALSE, and it should be true, So we are going to use grep to check if one is substring
@@ -491,9 +494,9 @@ for (i in 1:length(places$city)) {
 }
 
 # So, let's check if the results fom Google and revgeo differs, if so, we are going to do something to choose 
-# among the different cities. Para esto, si no encontrabamos la ciudad proporcionada por revgeo dentro de todo el   ##### I modified this
-# payload que nos regresa google, le asignamos a la dataframe el string 'Not the same'. Ahora solo debemos ve si
-# existe ese string en la columna GG con los resultaos de google.
+# among the different cities. For this, if we do not find the city assigned by revgeo within the whole, I modified this payload that Google returns to us, we assign the dataframe the string 'Not the same'. 
+# Now we just have to see if that string exists in the GG column with the google results.
+
 
 differentResults <- filter(.data = places, GG_result == 'Not the same')
 # Lets analyze these cases where we didn't get the same from google and revgeo
@@ -502,10 +505,10 @@ differentResults <- unique(differentResults)
 differentResults  # So we didn't get any result diffeent from google from what we have already got from revgeo
 # Now we have two columns, in city we have merged the info we had from the beginnign about city and now
 # we have filled the missing data using the first package revgeo.
-# THe other column is called GG_result, and there we have either: 'Not compared" because the city info 
+# The other column is called GG_result, and there we have either: 'Not compared" because the city info 
 # wasn't missing since we imported the data set. "Not the same" found inconsistencies from what we get from
 # regveo and google. Otherwise, it insert the same name as in city, simbolyzing that we got the same city data 
-# both from regveo and google
+# both from regveo and google.
 
 # We don't  do anything regarding the cuisine because there's no way of knowing but researching on internet.
 # This is out of our scope becase 1. There's not needed for further analysis 2. Time contraints (Redactalo bonito LA)
@@ -514,7 +517,7 @@ differentResults  # So we didn't get any result diffeent from google from what w
 
 
 
-# 3. ¿De qué ciudades son los restaurantes del estudio?
+# 3. What cities are the study restaurants from?
 # To know this, we just need to refer to the variable cities
 sprintf("There are: %s cities",nlevels(places$city))
 levels(places$city) 
@@ -530,7 +533,7 @@ levels(places$city)
 t <- count(places, 'placeID')  # Getting frequency of each placeID
 t <- merge(t, places, by='placeID')
 
-t <- select(t, placeID, freq, name)                                         ############## I MODIFIED THIS
+t <- select(t, placeID, freq, name)                                        
 t <- unique(x = t)
 
 
@@ -564,9 +567,10 @@ mostPopular
 
 
 
-# 5 ¿De qué tipo de comida/cocina son los 10 restaurantes más populares encontrados en el
-# inciso anterior? ¿Cuántos tipos de cocina diferentes hay en total?
-# Aqui podemos obtener el tipo de cocina combinado que creamos en un principio:
+
+# 5 What type of food / cuisine are the 10 most popular restaurants found in the
+# previous paragraph? How many different types of cuisine are there in total?
+# Here we can obtain the type of combined kitchen that we created at the beginning:
 
 mostPopular <- merge(mostPopular, cuisine, by='placeID')
 mostPopular
@@ -578,21 +582,23 @@ levels(droplevels(mostPopular$cuisine))
 
 
 
-# 5. ¿Cuántos tipos de cocina diferentes hay en total?
-# Aqui podemos tener tres diferentes resultados
-# a. Tipos de cocina dentro del dataset de los 130 lugares que estamos analizando ya mergeados
+# 5. How many different types of cuisine are there in total?
+# Here we can have three different results. 
+# a.Types of cuisine within the dataset of the 130 places that we are analyzing already merged
 sprintf("Number of types of cuisines: %s",nlevels(droplevels(places$cuisine)))
 levels(places$cuisine) 
 
-# b. Tipos de cocina dentro del dataset de cocina que importamos, sin ningun procesamiento
-# Since we have made a lot of modofications, we will import the dataset again
+
+# b. Types of cuisine within the kitchen dataset that we import, without any processing
+# since we have made a lot of modifications, we will import the dataset again
 
 cuisine_original   <- read.csv(file = "RCdata/chefmozcuisine.csv", header = TRUE, sep = ',')
 cuisine_original   <- select(.data = cuisine_original, placeID, Rcuisine)
 nlevels(cuisine_original$Rcuisine)  # 59
 # Recall that we have this many cuisine types because in this dataset we have placesID we are not analyzing
 
-# c. Tipos de cocina dentro del dataset de cocina original, pero solo de los 130 lugares que estuvimos analizando
+
+# c. Types of cuisine within the original kitchen dataset, but only of the 130 places we were analyzing
 commonPlaceIDs <- as.factor(intersect(cuisine$placeID, rating$placeID))
 cuisine_original_130 <- droplevels(subset(cuisine_original, placeID %in% commonPlaceIDs)) # Here we extract the entire row of top 10 best rated places
 nlevels(cuisine_original_130$Rcuisine)  # 23 levels, they are less than the 'merged' cuisines because when merging, new levels are created
@@ -601,10 +607,10 @@ levels(cuisine_original_130$Rcuisine)
 
 
 
-# 6. Generar la matriz de Utilidad considerando los renglones con la variable userID, las
-# columnas con placeID, y los valores de la matriz con rating. A partir de dicha matriz de
-# utilidad aplicar la factorización SVD (Singular Value Decomposition) para obtener la
-# matriz de variables latentes para los restaurantes.
+# 6. Generate the Utility matrix considering the rows with the userID variable, the
+# columns with placeID, and the array values with rating. From said matrix of
+# utility apply the SVD (Singular Value Decomposition) factorization to obtain the
+# latent variable matrix for restaurants.
 
 # First, let's get only the variables we will need in the simple-triple-matrix form
 places_stm <- select(places, placeID, userID, rating, name)
@@ -652,36 +658,38 @@ head(place_names)
 write.csv(utMx, file = "RCdata/Utility_Matrix.csv", na="")
 
 
-# 6. A partir de dicha matriz de
-# utilidad aplicar la factorización SVD (Singular Value Decomposition) para obtener la
-# matriz de variables latentes para los restaurantes.
+# 6. From said matrix ofutility apply the SVD (Singular Value Decomposition) factorization 
+# to obtain the latent variable matrix for restaurants.
 
 #install.packages("irlba")
 library(irlba)
-# SI queremos genera la matriz de variables latentes para los restaurantes, deberiamos terminar 
-# con una matrix u de dimensiones 130x130
 
-# Cambiamos entradas NA por 0, manejables matematicamente
+# If we want to generate the latent variable matrix for restaurants, we should finish
+# with a matrix u with dimensions 130x130
+
+
+# Change NA inputs to 0, mathematically manageable
 utMx[is.na(utMx)] <- 0
 MSVD <- svd(t(utMx))  # in MSVD we have u, d and v that forms from the decomposition
 dim(MSVD$u)  # We can observe we end with the right size of u, because we transpose the utility matrix in the line before
 placesLatentMatix <- MSVD$u
-# Resultado del insciso 6:
+# Result of subsection 6:
 placesLatentMatix
 placesLatentMatix[1:10,1:10]
 
-# 7. Si a un usuario le gustó el restaurante “Gorditas Doña Gloria” con placeID: 132834,
-# ¿Qué otros 12 restaurantes (indicar los nombres) le podrías recomendar usando la
-# descomposición SVD con el método de correlación de “pearson” y considerando los 10
-# valores singulares más grandes de la SVD? Nota: no importa por el momento de qué
-# ciudad sea el restaurante.
+# 7. If a user liked the restaurant "Gorditas Doña Gloria" with placeID: 132834,
+#What other 12 restaurants (indicate names) could you recommend using the
+# SVD decomposition with the "pearson" correlation method and considering the 10
+# largest singular values of the SVD? Note: it doesn't matter for the moment what
+# city be the restaurant.
 
 
-utrunc <- MSVD$u[,1:10]  # Trucarlo paa las primeras 10 collumnas latentes, coRRespondientes a los 10 valores latentes
-# mas grandes, Dado que la funcion svd() que usamos antes Regresa los valores singulares en d ordenados de mayor a menor
-
-corr_mx <- cor( t(utrunc), use='pairwise.complete.obs', method = "pearson") # Aqui obtenemos la matix de correlacion utilizando la correlacion 
-# de pearson. 
+utrunc <- MSVD$u[,1:10]  
+# Truncate it for the first 10 latent columns, corresponding to the 10 latent values
+# larger, Since the svd () function we used before Returns the singular values in d ordered 
+# from highest to lowest
+corr_mx <- cor( t(utrunc), use='pairwise.complete.obs', method = "pearson")# Here we obtain the correlation matrix using the correlation
+#from pearson.  
 df_cor <- as.data.frame(corr_mx)
 
 library(ggplot2)
@@ -696,23 +704,25 @@ ggplot(data=tmp, aes(x=Var1,y=Var2,fill=value)) + geom_tile()  # We tried to hav
 place_names <- colnames(utMx)
 # Now, from a restaurant name, lets get the index position in the corelation matrix:
 
-# Seleccionamos el nombre
+# We select the name
 name2look <- 'Gorditas Doa Gloria'
-# Obtenemos su indice dentor de la matix de correlacion
+# We obtain the index of the correlation matrix
 nameIndex <- which(place_names == name2look)
 
 
-# Y ahora vamos a seleccionar toda la columna de este restaurante
+# Now we select all the column of these restaurant
 restOptions <- corr_mx[,nameIndex]
-# Obtenemos los indices de los restaurantes ordenaDos de mayoR corRelacion a menor correlacion
+# We obtain the indexes of the restaurants ordered from highest correlation to lowest correlation
 orderedRest <- order(-restOptions)
-# Y despues utilizamos estos indices paRa extRaer los nombres asociaos a esos indices con mayorr correlacion,
-# Ignoramos el primer indice dado que seRa el que tenga corRelacion 1, es decir, el mismo restaurante y no vamos a 
-# recomendar el mismo restaurante
-numberOfRecomm <- 12  # le daRemos 12 Recomendaciones
+# And then we use these indices to extract the names associated with those indices with greater correlation,
+# We ignore the first index since it will be the one with correlation 1, that is, the same restaurant and we will not
+# recommend the same restaurant
+numberOfRecomm <- 12  # we will provide 12 Recommendations
 RecommendedRest <- place_names[orderedRest[2:numberOfRecomm+1]]
 
-RecommendedRest   # Aqui se obsevan los 12 restaurantes recomendados
+for (i in 1:11){
+  print(RecommendedRest[i])
+}   # Here are the 12 recommended restaurants
 
 
 

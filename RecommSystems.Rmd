@@ -1154,7 +1154,9 @@ orderedRest <- order(-restOptions)
 numberOfRecomm <- 12  
 RecommendedRest <- place_names[orderedRest[2:numberOfRecomm+1]]
 
-RecommendedRest # Here are the 12 recommended restaurants
+for (i in 1:11){
+  print(RecommendedRest[i])
+}   # Here are the 12 recommended restaurants
 
 ```
 <div style="text-align: right"> Return to [Index] </div>
@@ -1164,6 +1166,8 @@ RecommendedRest # Here are the 12 recommended restaurants
 Altough this homework was intended to exercise our knowledge regarding recommender systems, we faced some other situations that may occur while analyzing data from different datasets. For example, we showed the importance of analyzing the data before merging it into a dataframe. If we hadn't done this, we would have ended with very different results in many of the homework's points.
 
 Also, we learned how to get a bit more of information of categorical variables by getting the frequency of occurence of each level, which gives use numerical information we can analyze, as we showed for several factors. Furthermore, we got familiar with cloud services such as Google's places service that we used. 
+
+It is also important to notice the context of the data, while analyzing the latitude and longitude of the cities, while we had five cities, there were just three groups in the plot, it is important to understand the two of the cities were adjacents to two of the other cities.
 
 Regarding the decomposition by svd, we truncated the output of the svd() function to the first 10 values, this is indeed a way to balance the complexity of the model mantaining its accuracy. However, we thought that cutting it to the first 10 values, that is, the first 10 vectos of the latent matrix 'u' which are related to the 10 greatest singular values of the vector 'd' is not the best approach. We have lost some infromation due to this truncation, but **how are we sure we truncated it to the right length to avoid missing too much information?**
 <br>
