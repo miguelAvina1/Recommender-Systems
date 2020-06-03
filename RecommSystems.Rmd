@@ -22,16 +22,17 @@ output: html_notebook
 #### &nbsp;&nbsp;&nbsp;&nbsp;     1.1 [Merging *geoplaces* and *rating* datasets.]
 #### &nbsp;&nbsp;&nbsp;&nbsp;     1.2 [Merging *cuisine* with *geoplaces* and *rating*]
 #### 2. [Descriptive Analysis]
-#### 2.1 ['City' missing data]
-#### 2.2 ['RCuisine' missing data]
+#### &nbsp;&nbsp;&nbsp;&nbsp;     2.1 ['City' missing data]
+#### &nbsp;&nbsp;&nbsp;&nbsp;     2.2 ['RCuisine' missing data]
 #### 3. [Dataset cities]
 #### 4. [Popular restaurants]
-#### 4.1 [Total number of restaurants]
+#### &nbsp;&nbsp;&nbsp;&nbsp;     4.1 [Total number of restaurants]
 #### 5. [Popular cuisines]
-#### 5.1 [Total number of cuisines]
+#### &nbsp;&nbsp;&nbsp;&nbsp;     5.1 [Total number of cuisines]
 #### 6. [Utility matrix]
-#### 6.1 [Latent variable matrix (Restaurants)]
+#### &nbsp;&nbsp;&nbsp;&nbsp;     6.1 [Latent variable matrix (Restaurants)]
 #### 7. [Recommendation with Pearson correlation]
+#### 8. [Conclusion]
 
 <hr>
 
@@ -232,6 +233,7 @@ After this analysis of the three imported data sets, we have discovered the foll
 
 1. In *cuisine*, some placeIDs have more than one cuisine linked to them.
 <br>
+<div style="text-align: right"> Return to [Index] </div>
 
 ### Merging *geoplaces* and *rating* datasets.
 
@@ -243,6 +245,7 @@ places <- merge(rating, geoPlaces, by="placeID")
 sprintf("Number of observations in merged dataframe: %s",dim(places)[1])
 ```
 <br>
+<div style="text-align: right"> Return to [Index] </div>
 
 ### Merging *cuisine* with *geoplaces* and *rating*
 We can not merge the *cuisine* dataframe directly as we have done in the previous section. Doing it this way would result in:
@@ -367,6 +370,7 @@ summary(places)
 <br>
 <hr>
 
+<div style="text-align: right"> Return to [Index] </div>
 
 ### Descriptive Analysis
 <span style="color:#0834a4; font-family:Georgia; font-size:1.3em;">
@@ -546,149 +550,141 @@ barplot(height = table(places$city))
 t <- count(places, 'city')
 summary(t$freq)
 ```
-Getting the summary  is useful to know how many ratings (votes) have the most 'popular' city (834) and that the city with fewest votes only has 17 among all its restaurants.
+Getting the summary  is useful to know how many ratings (votes) the most 'popular' city has (834) and that the city with fewest votes only has 17 among all its restaurants.
 ```{r}
 boxplot(t$freq)
 ```
 <center>**Figure 29. Boxplot of cities** </center>
 <br>
 <br>
-The boxplot shown inf Fig. 29 only shows the outlier value which correspond to San Luis Potosi, the city with most restaurants in the data.
-<br>
+The boxplot shown inf Fig. 29 shows an outlier value which correspond to San Luis Potosi, the city with most restaurants and therefore with most votes in the data.
+<br><br>
 
 #### **Latitude**
 
 <br>
-This is an strictly numerical value, so we can do a numerical analysis
+This is an strictly numerical value, so we can do a numerical analysis. We will get the summary of the data, including its standard deviation. Then we will show the data using an histogram and a density plot. Some insigths based on the results are provided after each step.
 ```{r}
 print(summary(places$latitude))
 ```
 ```{r}
 sprintf("Std dev: %s", round(sd(places$latitude, na.rm = TRUE), digits = 4))
 ```
-```{r}
-boxplot(places$latitude, ylab = "Lat", xlab = 'Latitude')
-```
-<center>**Figure 30. Boxplot of Latitude**</center>
+The information of summary and the standard deviation can be particularly helpful for a person with advanced geographical knowledge who could identify the zone in latitude the places are located. 
 ```{r}
 hist(places$latitude)
 ```
-<center>**Figure 31. Histogram of latitude**</center>
+<center>**Figure 30. Histogram of 'latitude' variable**</center>
 <br>
 <br>
-In the histogram shown in Fig. 28 we observe that the latitude is divided in three different degrees. This shows that among the five cities we are analyzing, at least two of them share a similar latitude.
+In the histogram shown in Fig. 30 we observe that the latitude is divided in three main zones or degrees. This shows that, among the five cities we are analyzing, at least two of them share a similar latitude. In the Fig. 31, we can observe this division a bit more clear and identify four 'peaks'.
 ```{r}
 plot(density(places$latitude, na.rm = TRUE))
 ```
-**Figure 32. Density plot of latitude"**
+<center>**Figure 31. Density plot of 'latitude' variable**</center>
 <br>
-<br>
-In Fig. 32 we can observe four 'peaks', so there may be locations in 4 different latitudes and two of them are fair close to each other.
 <br>
 <br>
 
 #### **Longitude**
 
-
+The longitude variable is very similar to latitude, so we will analyze it the same way. Some insigths based on the results are provided after each step.
 ```{r}
 print(summary(places$longitude))
 ```
 ```{r}
 sprintf("Std dev: %s", round(sd(places$longitude, na.rm = TRUE), digits = 4))
 ```
-```{r}
-boxplot(places$longitude, ylab = "Long", xlab = 'Longitude')
-```
-**"Figure 30. Boxplot of longitude"**
 <br>
+As we stated before, the information of summary and the stanrdad deviation can be helpful for a person with enough geographical knowledge to interpret the numbers into spacial zones or locations.
+<br>
+In the histogram shown in Fig. 32 we observe that the longitude is divided in four main zones or degrees. This shows that, among the five cities we are analyzing, one of them share a similar longitude to another. This information and the histogram in Fig. 30 can lead to a conclusion that at least two cities are adjacent.
 <br>
 ```{r}
 hist(places$longitude)
 ```
-**"Figure 31. Histogram of longtide"**
+**Figure 32. Histogram of the 'longitude' variable**
 <br>
 <br>
-In this plot we observe as we have divided in four different main locations regarding longitude
 ```{r}
 plot(density(places$longitude, na.rm = TRUE))
 ```
-**"Figure 32. Density plot of longitude"**
+<center>**Figure 33. Density plot of longitude**</center>
 <br>
 <br>
-Here we have 4 'peaks', so there may be locations in 4 different longitude
 <br>
-<br>
-Latitude and Longitude did not give a lot of information, but normally, these data is used at the same time, we plot them.
+The separated analysis of latitude and longitude variables did not give a lot of significant or helpful information. Normally these data are used together as a set of coordinates, therefore, we will analyze them together as a pairs.
+
+In Figure 33 we plot the longitude vs latitude which generates a virtual map of the restaurants' location.
+We observe that there are three main cumulus but we have five different cities. For analayzing data, there must always be context of what we are studying, the cities in the data are from Mexico; in particular, Cuernavaca is a city which adjoints Juitepec that is why there are shown as a single cumulous of points. 
+Soledad (Soledad de Graciano Sanchez) is a city which is adjacent to San Luis Potosi, and that is why those two cities merges in one cumulous.
+This kind of analysis is more suitable adn helpful for this specific information rather than getting quartiles, mean, standard deviation, etc.
 ```{r}
 plot(places$longitude, places$latitude)
 ```
-**"Figure 33.Graph of latitude and longitude"**
+**"Figure 34.Graph of latitude and longitude"**
 <br>
 <br>
-Now we can easily observe three main cumulus, but we have 5 different cities (and 1 undefined)
+
+#### **Cuisine**
+
 <br>
-Now, let's get context. Cuernavaca is a city which adjoints Juitepec, that's why they will be seen as a main cumulous. 
-<br>
-And Soledad, (soledad de Graciano Sanchez) is also adjacent to San Luis Potosi, that's why those two merges in one single main cumulus
-<br>
-We think this kind of analysis is more suitable for this information, rather than mean, quartile, etc.
-<br>
-Furthermore, if we 'zoom in' we can actually observe the two comulus of juitepec and cuernavaca
-<br>
-<br>
-**Cuisine**
-<br>
-<br>
-This was already a categorical (factor) variable, so we didn't do any modification
+This variable was imported as a categorical (factor) variable, so we didn't do any modification to it. We will perfom a similar analysis as we did for placeID and UserID.
 ```{r}
 barplot(height = table(places$cuisine))
 ```
-**"Figure 34.Graphic of cuisine"**
+**"Figure 35.Graphic of cuisine"**
 <br>
 <br>
-There is not so much information in this graph.
 ```{r}
 t <- count(places, 'cuisine')
 sprintf("Average places per cuisine: %s", mean(t$freq))
 summary(t$freq)
 ```
-So we have just 4 places of a not so popular cuisine and the maximum is regarding the '?'
+In Fig. 36 we observe the boxplot of the occurences for each cuisine. There are only two outliers; one of them must be the missing data ('?') but it would be intersting to know the other. Below we obtain this information.
 ```{r}
 outvals <- boxplot(t$freq)$out
 ```
-**"Figure 35. Boxplot of cuisine"**
+**"Figure 36. Boxplot of cuisine"**
 ```{r}
 t[which(t$freq %in% outvals),]
 ```
 
-**"Figure 36. Cuisine of all Restaurants"**
+**Figure 37. Kind of cuisine of the outliers in Fig. 36**
 <br>
 <br>
 <hr>
+<div style="text-align: right"> Return to [Index] </div>
 
 ### 'City' missing data
 
-Perform an analysis to determine and justify the decision you make about such missing data
+<span style="color:#0834a4; font-family:Georgia; font-size:1.3em;">
+Perform an analysis to determine and justify the decision you make about such missing data. <br>
+For the case of missing data in the 'city' variable, you could research about at least the packages "revgeo" or "ggmap" from R to retreive the city name using latitude and longitude information.
+</span>
+
 <br>
-we have missing data in city (which came with the dataset since we imported it) and missing data in cuisine, that we added when merging cuisine data.
+We have missing data in *city* (which came with the dataset since we imported it) and missing data in *cuisine*, that we added when merging cuisine data.
+
 <br>
-We could end without missing data in this variable if we haven't added the merge(places, cuisine, by="placeID", all=TRUE) 'all=TRUE' parameter to the merge operation, otherwise we would've ended with no missing data but fewer observations. 
-<br>
-So, for city we will use revgeo and ggmap to get the city name from lattitude and longitude
+For the 'city' variable, we will use *revgeo* and *ggmap* to get the city name using latitude and longitude.
 ```{r}
 #install.packages("revgeo")
 #install.packages("ggmap")
 library(revgeo)
 library(ggmap)
 ```
-First with revgeo
+First we will get the cities' names using *revgeo*.
 ```{r}
 undef_cities <- filter(places, city == 'Undefined') 
 undef_cities <- select(.data = undef_cities, placeID, city, latitude, longitude)
 ```
-Here we store a copy of those places without City, we will use it later.
+Here we store in 'undef_cities' a copy of those places without city name information, we will use it later.
 <br>
-R doesn't allow to add new entries in a factor if they don't belong to the currently levels. So first, we wil un-factorized city, then add the new cities we get, and then factorize again.
+R doesn't allow to add new entries to a factor if they don't belong to the currently defined levels; therefore, we wil un-factorize 'city', then add the new cities we get using *revgeo*, and then factorize the variable again.
+Notice that *revgeo* returns a single character strings in the form of:  <br><br>
+"House Number Not Found Street Not Found, Cuernavaca, Morelos, 62000, Mexico" <br><br>
+And it mantains this specific format for any given coordinates. To extract the city name from this character string we will split the string using ', ' as separator and store the information after the first comma.
 ```{r}
 places$city <- as.character(places$city)
 for (i in 1:length(places$city)) {
@@ -699,17 +695,17 @@ for (i in 1:length(places$city)) {
 }
 
 ```
-**"Figure 37. Getting data from revgeo"**
+<center>**Figure 38. Getting data from revgeo**</center>
 
-Re-factorize
+After this, we will re-factorize the variable and show the levels we have after retriving city names with *revgeo*. 
 ```{r}
 places$city <- as.factor(places$city)
 sprintf("Number of places: %s",nlevels(places$city))  # 
 levels(places$city)
 ```
-**"Figure 38. Same cities with different labels"**
+**Figure 39. Levels for the 'city' variable after filling missing data with *revgeo* **
 
-We see that as before, we have same cities with different labels, we we will correct them as before.
+We observe in Fig. 39 that we have same cities with different labels, we we will correct them as we did before.
 ```{r}
 places$city <- factor(places$city, labels=c("Cd. Victoria","Cd. Victoria","Cuernavaca","Jiutepec",
                                             "San Luis Potosi", "San Luis Potosi", "Soledad", "Soledad"))
@@ -719,25 +715,46 @@ places$city <- droplevels(places$city)
 sprintf("Number of places: %s",nlevels(places$city))  # 
 levels(places$city)
 ```
-**"Figure 39. Cities"**
+<center>**Figure 40. Correced vevels for the 'city' variable without missing data**</center>
 <br>
 <br>
-Now we will use google to make sure we are ok, we should be getting the same cities.
+Now we will use *ggmap* package from Google to double check the cities we retrieved using *revgeo*. In theory, we should get the same city name if we use the same longitude and latitude information.
 <br>
-To use google ggmap, it requires an API key so we must register so:
+To use Google's ggmap, it requires an API key so we must register into Google Cloud services to do so:
 <br>
-First, we had to go to https://cloud.google.com/maps-platform/ to register for a free trial
+First, we had to go to https://cloud.google.com/maps-platform/ and register for a free trial. This trial gave us 300 USD to start using their services which is enough for doing few requests as we will do.
 <br>
-We start with 300 USD so we must use it wisely
+Then we must enable the google APIs for maps which will generate an API key that we will use to get the required information. 
 <br>
-Then we must enable the google APIs for maps which will generate an API key which we used to get the required information. 
-<br>
-Once we have the private key, we tell ggmap about this key using:
+Once we have the private key, we register it using ggmap:
 ```{r}
 register_google(key = "AIzaSyD4mKmiXYdtE9xALBocEVu_Tl15a4iEW4I")
 ```
 
-This key must be kept private and not shared because google has billing credit card so anyone could do bad things to your account. We recommend to secure your private key to be used only from a certain IP.
+This key must be kept private and not shared because Google asks for billing credit card when creating a new account, so anyone could take advantage of this key to gain access to free Google cloud services. We recommend to secure your private key by allowing it to be used only from a certain IPs.
+
+In the loop below we execute this Google's API to find city information of all the 'undef_cities' we saved early.
+What this loop does is:
+
+1. Iterate trough all observations in the 'city' variable.
+
+1. IF the observation is in undef_cities, the algorithm continue, otherwise it passes to the next city.
+
+1. Execute revgeocode() function to retrieve Google's data.
+
+- This function returns a big payload with a not static structure, that is, it returns a lists of lists which **differs in sizes for each request**. 
+Therefore, we can not know before-hand where the city name will be stored in this huge payload. To overcome this problem, we are performing a **depth-first search** in the returned payload. <br>
+  To know if we find the same city name returned by *revgeo* in Google's paylod we are:
+  1. Changing the city name to lowercase
+  2. Removing all characters that are not in a-z set.
+  3. Verifying if there exist a subset of the city name in any of the data entries from google. (This let us identify 'Soledad de Graciano Sánchez' as the same of 'Soledad').<br><br>
+  
+  If we find this subset in google's payload, we save it in a new column named GG_Result, otherwise, we save 'Not the same' . Then we exit the loop and continue with the next city
+  
+  At the end of the loop we will have a new column named GG_result with three possible levels:
+  1. 'Not compared' for those cities that had city name information when imported from the dataset.
+  2. A name of the city, for those cities that google returned the same city info as *revgeo*
+  3. 'Not the same' for those cities that google returned a different city name than *revgeo*
 
 ```{r}
 places$GG_result <-  'Not compared'
@@ -755,7 +772,7 @@ for (i in 1:length(places$city)) {
     citynameOriginal <- places$city[i]
     compare_city <- as.character(lapply(as.character(citynameOriginal), tolower))
     compare_city <- gsub("[^a-z]","",compare_city)
-    print(compare_city)
+    # print(compare_city)
     #sprintf("Comparing with '%s'", compare_city)
     for (j in 1:length(google_result)) {
       address_comp <- google_result[[j]]$address_components
@@ -788,45 +805,67 @@ for (i in 1:length(places$city)) {
   }
 }
 ```
-So, let's check if the results fom Google and revgeo differs, if so, we are going to do something to choose among the different cities. 
+Now we will check if there is any result fom Google's *ggmap* that is different from what we got from *revgeo*; if so, we are going to do something to choose one of the different results. 
 <br>
-For this, if we do not find the city given by revgeo inside the payload that google gives, we assign to the dataframe the string "Not the same".
+For this, we will filter out all the rows that have the string 'Not the same' in the GG_result column.
 ```{r}
 differentResults <- filter(.data = places, GG_result == 'Not the same')
 ```
-Lets analyze these cases where we didn't get the same from google and revgeo
+Now, we will display all the cases where we didn't get the same from google *ggmap* and *revgeo*
 ```{r}
 differentResults <- select(differentResults, -userID, -rating)
 differentResults <- unique(differentResults)
 differentResults
 ```
 
-So we didn't get any result diffeent from google from what we have already got from revgeo
+As shown above, we didn't get any result different from Google's *ggmap* so we can continue with our analysis.
 <br>
-Now we have two columns, in city we have merged the info we had from the beginnign about city and now we have filled the missing data using the first package revgeo.
-<br>
-The other column is called GG_result, and there we have either: 'Not compared" because the city info wasn't missing since we imported the data set. "Not the same" found inconsistencies from what we get from regveo and google. Otherwise, it insert the same name as in city, simbolyzing that we got the same city data both from regveo and google.
+
+<div style="text-align: right"> Return to [Index] </div>
 
 ### 'RCuisine' missing data
 
-We don't  do anything regarding the cuisine because there's no way of knowing but researching on internet.
-This is out of our scope becase 1. There's not needed for further analysis 2. Time contraints (Redactalo bonito LA)
-3. They won't case any NA-related problem since we replace missing data with character '?'
+<br>
+We could have ended without missing data in this variable if we haven't added the *all=TRUE* parameter in the instruction *merge(places, cuisine, by="placeID", all=TRUE)* when merging the cuisine information into the global dataframe, however, we would have ended with fewer observations, losing important information.
+
+We are not going to do anything regarding the cuisine's missing data because there is no way of knowing this information but researching on internet.
+This is out of our scope because: 
+
+1. It is not needed for further analysis
+
+1. Time contraints
+
+1. This issue will not case any NA-related problem since we already replaced missing data with character '?'
 
 <br>
 <hr>
-**3. What cities are the study restaurants from?**
+<div style="text-align: right"> Return to [Index] </div>
+
+### Dataset cities
+
+<span style="color:#0834a4; font-family:Georgia; font-size:1.3em;">
+What cities are the study restaurants from?
+</span>
+
 <br>
-To know this, we just need to refer to the variable cities
+To obtain this information, we just need to refer to the variable 'city' and look at the number of levels and each level's name:
 ```{r}
 sprintf("There are: %s cities",nlevels(places$city))
 levels(places$city) 
 ```
 <br>
 <hr>
-**4.If we consider the popularity of a place as those with the highest number of user reviews (regardless of whether the review was positive or negative), get the names of the 10 most rated / popular restaurants. How many different restaurants are there in total?**
+<div style="text-align: right"> Return to [Index] </div>
+
+### Popular restaurants
+
+
+<span style="color:#0834a4; font-family:Georgia; font-size:1.3em;">
+If we consider the popularity of a place as those with the highest number of user reviews (regardless of whether the review was positive or negative), get the names of the 10 most rated / popular restaurants.
+</span>
+
 <br>
-Here, we just need to get the number of occurencies (observations) per placeID, since there is one observation per vote.
+To obtain the most popular restaurants, we just need to get the number of occurencies (observations) per placeID, since there is one observation per vote (rating). See results in Fig. 41
 ```{r}
 t <- count(places, 'placeID')  # Getting frequency of each placeID
 t <- merge(t, places, by='placeID')
@@ -846,10 +885,10 @@ mostPopular <- data.frame(popularPlaceID, mostPopular, t$freq[1:10])
 colnames(mostPopular) <- c("placeID", "Restaurant", "Votes")
 mostPopular
 ```
-**"Figure 40. Top 10 rated restaurants"**
+<center>**Figure 41. Top 10 rated restaurants**</center>
 <br>
 <br>
-**4.1 As an extra part, let's get those 'best rated' restaurants, this is the one with most '2' as rating.**
+**As an extra part, we will get those 'best rated' restaurants, that is, the restaurants with more number of '2' as rating.** See results in Fig. 42
 ```{r}
 best_rated <- filter(places, rating == "2")
 best_rated <- select(.data = best_rated, placeID, name)
@@ -862,117 +901,142 @@ bestRated <- droplevels(unique(bestRated$name))
 bestRated <- data.frame(popularPlaceID, bestRated, t$freq[1:10])
 colnames(bestRated) <- c("placeID", "Restaurant", "Positive Votes")
 bestRated
-# Compare with
 ```
-**"Figure 41. Best Rated Restaurants"**
+<center>**Figure 42. Best Rated Restaurants**</center>
+<br>
+
+We observed that there are some best-rated places that does not fall into the top 10 most popular restaurants, such as 'El Rincon de San Franciso' which has 14 votes of '2'. If we were to create a more complex recommender system, we might opt to use the best-rated restaurants instead of the most-popular restaurants to solve the cold-start problem.
+<br>
+<br>
+<div style="text-align: right"> Return to [Index] </div>
+
+### Total number of restaurants
+<span style="color:#0834a4; font-family:Georgia; font-size:1.3em;">
+How many different restaurants are there in total?
+</span>
+
+To get this information we just need to check the number of levels in placeID as follows:
 ```{r}
-mostPopular
+nRestaurants <- nlevels(places$placeID)
+sprintf("In this data set we have a total of %s different restaurants", nRestaurants)
 ```
-**"Figure 42. Compared with the most popular"**
+
+<br><br>
+<div style="text-align: right"> Return to [Index] </div>
+
+### Popular cuisines
+
+<span style="color:#0834a4; font-family:Georgia; font-size:1.3em;">
+What type of food / cuisine are the 10 most popular restaurants found in the previous point?
+</span>
+
 <br>
 <br>
-<hr>
-**5. What type of food / cuisine are the 10 most popular restaurants found in the previous paragraph? How many different types of cuisine are there in total?**
-<br>
-<br>
-Here we can obtain the type of combined kitchen that we created at the beginning:
+Here we fill the 'mostPopular' with the cuisine information using placeID as pivot.
 ```{r}
 mostPopular <- merge(mostPopular, cuisine, by='placeID')
 mostPopular
 ```
-**"Figure 43. Most popular restaurants"**
+<center>**Figure 43. Most popular restaurants and their kind of food (cuisine)**</center>
 <br>
 <br>
-Getting only the cuisine
+Then we will just extract the cuisine information as follows:
 ```{r}
 levels(droplevels(mostPopular$cuisine))
 ```
-**"Figure 44. Most popular cuisines"**
+<center>**Figure 44. Most popular cuisines**</center>
 <br>
 <br>
-**How many different types of cuisine are there in total?**
+<div style="text-align: right"> Return to [Index] </div>
+
+### Total number of cuisines
+<span style="color:#0834a4; font-family:Georgia; font-size:1.3em;">
+How many different types of cuisine are there in total?</span>
+<br>
+Here we can have three different results:
 <br>
 <br>
-Here we can have three different results
-<br>
-<br>
-**a. Types of food food inside the dataset of the 130 places that are already merged.**
+a. Different types of food inside the dataset of the 130 places that are **already merged.**
 ```{r}
 sprintf("Number of types of cuisines: %s",nlevels(droplevels(places$cuisine)))
 levels(places$cuisine)
 ```
-**"Different types of cuisines"**
+<br><br>
 <br>
-<br>
-**b. Types of cuisine inside the dataset that was imported, without processing.**
-<br>
-Since we have made a lot of modofications, we will import the dataset again.
+b. Different types of cuisines inside the dataset that was imported, **without processing.** Since we have made a lot of modifications, we will import the dataset again for simplicity. Recall that we have this many cuisine types because in the original dataset we had extra placesID we are not analyzing in the other sets.
+
 ```{r}
 cuisine_original   <- read.csv(file = "RCdata/chefmozcuisine.csv", header = TRUE, sep = ',')
 cuisine_original   <- select(.data = cuisine_original, placeID, Rcuisine)
 sprintf("Number of types of cuisine: %s",nlevels(cuisine_original$Rcuisine))
 ```
 
-Recall that we have this many cuisine types because in this dataset we have placesID we are not analyzing.
-<br>
-**c. Types of cuisine inside the dataset of original cuisine, just the 130 places that we analyzed.**
+<br><br>
+c. Types of cuisine inside the dataset of **original cuisine**, just the 130 places that we analyzed.
+
 ```{r}
 commonPlaceIDs <- as.factor(intersect(cuisine$placeID, rating$placeID))
 cuisine_original_130 <- droplevels(subset(cuisine_original, placeID %in% commonPlaceIDs))
 sprintf("Number of types of cuisine: %s", nlevels(cuisine_original_130$Rcuisine))
 levels(cuisine_original_130$Rcuisine)
 ```
-**"Figure 45. Types of cuisine of the original dataset"**
+
 <br>
 <br>
 <hr>
-**6. Generate the utility matrix considering the rows with the variable userID, the columns with placeID, and the values of the matrix with rating. From this utility matrix, apply SVD (Singular Value Decomposition) factorization to obtain the latent variable matrix for restaurants.**
+<div style="text-align: right"> Return to [Index] </div>
+
+### Utility matrix
+
+<span style="color:#0834a4; font-family:Georgia; font-size:1.3em;">
+Generate the utility matrix considering the rows with the variable userID, the columns with placeID, and the values of the matrix with rating. 
+</span>
+
 <br>
-<br>
-First, let's get only the variables we will need in the simple-triple-matrix form
+First, we will get the variables we will need in a dataframe in a simple-triple-matrix form.
 ```{r}
 places_stm <- select(places, placeID, userID, rating, name)
 head(places_stm)
 ```
-**"Figure 46. Variables needed for matrix"**
+<center>**Figure 45. First entries of the dataset with the variables needed for to generate an utility matrix**</center>
 <br>
 <br>
-Altough we used rating as a categorical value previously, here we must convert to numerical again
+Altough we used rating as a categorical value previously, here we must convert to numerical variable for this analysis.
 ```{r}
 places_stm$rating <- as.numeric(places_stm$rating)
 utMx <- with(places_stm, tapply(rating, list(userID, name), sum, default=NA))
 sprintf("Dimension of the matrix: %s",dim(utMx))
 ```
-We can observe that we created a matrix of 138x129, 138 correspond to the users we know we have but 
+We can observe that we created a matrix of 138x129, 138 correspond to the users we know we have but we should have 130 restaurant names, where is the missing one?
 <br>
-We should have 130 restaurant names, where is the missing one?
+If we recall, in our first analysis **we identified two places with the same name**. This characteristic hasn't been problematic until know. We will change one of those places' name so we can identify it as separate restaurants.
 <br>
-If we recall, at the begining we identified two places with the same name. Until know, it hasn't been problematic but know, let's just change one of those places' name so we can identify it as separate restaurants
-<br>
-Let's retrieve that name again
+We will retrieve the repeated name again
 ```{r}
 n_occur <- data.frame(table((geoPlaces$name)))
 n_occur[n_occur$Freq > 1,]
 ```
-**"Figure 47. Repeated restaurant"**
+<center>**Figure 46. Repeated restaurant name**</center>
 <br>
 <br>
 ```{r}
-geoPlaces[geoPlaces$name %in% n_occur$Var1[n_occur$Freq > 1],]
+geoPlaces[geoPlaces$name %in% n_occur$Var1[n_occur$Freq > 1],][,1:2]
 ```
+<center>**Figure 47. Repeated names and their placeID**</center>
+
 <br>
 <br>
+We will get the placeID of one of the repeated name.
 ```{r}
 # Let's get the placeID of the first one
 ID <- geoPlaces[geoPlaces$name %in% n_occur$Var1[n_occur$Freq > 1],][1,1]
 ID
 ```
-**"Figure 48. placeID of one of the repeated restaurants"**
+<center>**Figure 48. placeID of one of the repeated restaurants**</center>
 <br>
 <br>
-Now, we will replace "Gorditas Dona Tota" to "Gorditas Dona Tota 2"
+Now, we will replace "Gorditas Dona Tota" to "Gorditas Dona Tota 2". 
 <br>
-De-factorize
 ```{r}
 backup <- places$name
 places$name <- as.character(places$name)
@@ -983,7 +1047,9 @@ for (i in 1:length(places$placeID)) {
 }
 places$name <- as.factor(places$name)
 ```
-Repeating the process again
+
+
+After this modification, we will repeat the process of creating the utility matrix again. We observe that we end with the correct dimensions of the matrix: 138 x 130. In Fig. 49 we show a section of utility matrix, observe that it is a disperse matrix since most of the data is 'NA'. 
 ```{r}
 places_stm <- select(places, placeID, userID, rating, name)
 places_stm$rating <- as.numeric(places_stm$rating)
@@ -993,47 +1059,67 @@ dim(utMx)
 ```{r}
 utMx[1:10, 3:6]  # Here we can observe that it is a disperse matrix
 ```
-**"Figure 49. Disperse Matrix"**
+<center>**Figure 49. Utility matrix of the restaurants and userIDs**</center>
 <br>
 <br>
+We will store the columns' names which correspond to the restaurants' names so we can retrive this data later. Finally, we will save this utility matrix in a .csv.
+
 ```{r}
 place_names <- colnames(utMx)
 head(place_names)
 ```
-We save the utility matrix
+
 ```{r}
 write.csv(utMx, file = "RCdata/Utility_Matrix.csv", na="")
 ```
+<div style="text-align: right"> Return to [Index] </div>
 
-**From this utility matrix, apply SVD (Singular Value Decomposition) factorization to obtain the latent variable matrix for restaurants.**
+### Latent variable matrix (Restaurants)
+
+<span style="color:#0834a4; font-family:Georgia; font-size:1.3em;">
+From this utility matrix, apply SVD (Singular Value Decomposition) factorization to obtain the latent variable matrix for restaurants.
+</span>
+
 ```{r}
 #install.packages("irlba")
 library(irlba)
 ```
 
-If we want to generate the matrix of latent variables for restaurants, we should end with a matrix u with dimensions 130x130
+If we want to generate the matrix of latent variables for restaurants, we should end with a matrix 'u' with dimensions 130x130
 <br>
-We change "NA" for 0
+First we will change the "NA" values to 0 to avoid any problems while executing the decomposition function svd(). Then we will save the output of the svd() function into the variabel MSVD. What the svd function returns are the matrices 'u', 'v' and the singular value vector 'd'.
 ```{r}
 utMx[is.na(utMx)] <- 0
 MSVD <- svd(t(utMx))  # in MSVD we have u, d and v that forms from the decomposition
 dim(MSVD$u)  # We can observe we end with the right size of u, because we transpose the utility matrix in the line before
-placesLatentMatix <- MSVD$u
-placesLatentMatix
-placesLatentMatix[1:10,1:10] 
 ```
 
-**7. If a user liked the restaurant “Gorditas Doña Gloria” with placeID: 132834, what other 12 restaurants (indicate the names) could you recommend using the SVD decomposition with the "pearson" correlation method and considering the 10 largest singular values of the SVD? Note: it doesn't matter for the moment what city be the restaurant.**
+The latent variable matrix for the places corresponds to the 'u' matrix of the decomposition. Below we are just showing some entries of this matrix.
+``` {r}
+placesLatentMatix <- MSVD$u
+placesLatentMatix[1:5,1:7] 
+```
+<center>**Figure 50. Some entries of the latent matrix for restaurants**</center>
 
+<br>
+<div style="text-align: right"> Return to [Index] </div>
+
+### Recommendation with Pearson correlation
+
+<span style="color:#0834a4; font-family:Georgia; font-size:1.3em;">
+If a user liked the restaurant “Gorditas Doña Gloria” with placeID: 132834, what other 12 restaurants (indicate the names) could you recommend using the SVD decomposition with the "pearson" correlation method and considering the 10 largest singular values of the SVD? Note: it doesn't matter for the moment what city be the restaurant.
+</span>
+
+First we will truncate the matrix 'u', or the latent variable matrix, to the first 10 latent columns, corresponding to the **10 largest singular values**. We can perform a simple truncation since the svd () function we used before returns the singular values in the 'd' vector ordered from highest to lowest.
 ```{r}
 utrunc <- MSVD$u[,1:10]
 ```
 
-Truncate it for the first 10 latent columns, corresponding to the 10 largest latent values, Since the svd () function we used before returns the singular values in d ordered from highest to lowest
+Now, we will get a correlation matrix using the truncated SVD matrix, using the 'Pearson correlation'. Then we will store this matrix in 'corr_mx'. In Fig. 51, we show the correlation matrix using the *ggplot* matrix. However, since the matrix is large, we can not get much insights by generating this graphical repesentation.
 ```{r}
 corr_mx <- cor( t(utrunc), use='pairwise.complete.obs', method = "pearson")
 ```
-Here we get the correlation matix using the pearson correlation.
+
 ```{r}
 df_cor <- as.data.frame(corr_mx)
 library(ggplot2)
@@ -1042,22 +1128,21 @@ library(reshape2)
 tmp <- melt(data.matrix(cor(df_cor)))
 ggplot(data=tmp, aes(x=Var1,y=Var2,fill=value)) + geom_tile()
 ```
-**"Figure 50. Graph of correlation matrix"**
+<center>**Figure 51. Graph of correlation matrix**</center>
 <br>
 <br>
-We tried to have a look to the correlation matix graphically, however, since there are a lot of variables is not recommendedd
 
 ```{r}
 place_names <- colnames(utMx)
 ```
-Now, from a restaurant name, lets get the index position in the corelation matrix:
+Now, from a restaurant name, lets get the index position 'Gorditas Dona Gloria' in the corelation matrix:
 ```{r}
 # We select the name
 name2look <- 'Gorditas Doa Gloria'
 #And obtain the index of the correlation matrix
 nameIndex <- which(place_names == name2look)
 ```
-Now we select all the column of this restaurant
+Now we will select the column of this restaurant from the correlation matrix. After this, we arrange in descending order the column so we will keep with the higher correlated restaurants with 'Gorditas Dona Gloria' at the top of the column. Then, we will truncate this column to the first 12 rows which corresponds to the 12 restaurants we will recommend. These restaurants are shown below.
 ```{r}
 restOptions <- corr_mx[,nameIndex]
 # We obtain the index organized from higher correlation to lower correlation
@@ -1070,20 +1155,36 @@ RecommendedRest <- place_names[orderedRest[2:numberOfRecomm+1]]
 RecommendedRest # Here are the 12 recommended restaurants
 
 ```
+<div style="text-align: right"> Return to [Index] </div>
 
-We observe that we have truncated the decomposition by svd() to the first 10 values, this is indeed 
-a way to balancing the complexity of the model mantaining its accuracy. However, we thought that cutting it to the first 10 values, that is, the first 10 vectos of the latent matrix 'u' , related to the 10 greated singula values of the vector 'd'. We indeed have lost some infromation due to this truncation, but how are we sure we truncated it to the right length to avoid missing too much information?
+### Conclusion
+
+Altough this homework was intended to exercise our knowledge regarding recommender systems, we faced some other situations that may occur while analyzing data from different datasets. For example, we showed the importance of analyzing the data before merging it into a dataframe. If we hadn't done this, we would have ended with very different results in many of the homework's points.
+
+Also, we learned how to get a bit more of information of categorical variables by getting the frequency of occurence of each level, which gives use numerical information we can analyze, as we showed for several factors. Furthermore, we got familiar with cloud services such as Google's places service that we used. 
+
+Regarding the decomposition by svd, we truncated the output of the svd() function to the first 10 values, this is indeed a way to balance the complexity of the model mantaining its accuracy. However, we thought that cutting it to the first 10 values, that is, the first 10 vectos of the latent matrix 'u' which are related to the 10 greatest singular values of the vector 'd' is not the best approach. We have lost some infromation due to this truncation, but **how are we sure we truncated it to the right length to avoid missing too much information?**
 <br>
+
 There are several way of calculating this truncation value, most of them are empirical, such as plotting the singular values and locating the 'elbow' of the graph:
 ```{r}
 plot(MSVD$d)
 ```
-**"Figure 51. Graph of singular values"**
+<center>**Figure 52. Graph of singular values**</center>
+<br>
+In Fig. 52 we observe that the graph doesn't show an evident 'elbow', so we couldn't take this approach.
+For this homework we kept with the first 10 value truncation, mainly because of the time constraint. However, as a future work we would like to implement the Gavish and Donoho approach they discribe in the paper [The Optimal Hard Threshold for Singular Values is 4/√3](https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=6846297)  **that computes what is the best truncation value** to avoid missing too much information yet reducing the complexity of carrying the complete latent variable matrix. 
+<br>
+As the name of the paper states, this truncation value is **4/√3 but only for square matrices**, not for rectangular matrices.
+
+<br><br>
 <br>
 <br>
-Here we se that the elbow of the graph is not as evident, so we can not take this approach
-For this homework we will keep with the 10 value truncation, bc of time factors, however, we hope to implement the Gavish and Donoho approach cited in. 
+<br>
+Return to [Index]
+<br>
+<br>
+<br>
+<br>
 
-
-## Indication 1
 
