@@ -605,7 +605,7 @@ In the histogram shown in Fig. 32 we observe that the longitude is divided in fo
 ```{r}
 hist(places$longitude)
 ```
-**Figure 32. Histogram of the 'longitude' variable**
+<center>**Figure 32. Histogram of the 'longitude' variable**</center>
 <br>
 <br>
 ```{r}
@@ -624,7 +624,7 @@ This kind of analysis is more suitable adn helpful for this specific information
 ```{r}
 plot(places$longitude, places$latitude)
 ```
-**"Figure 34.Graph of latitude and longitude"**
+<center>**Figure 34.Graph of latitude and longitude**</center>
 <br>
 <br>
 
@@ -635,7 +635,7 @@ This variable was imported as a categorical (factor) variable, so we didn't do a
 ```{r}
 barplot(height = table(places$cuisine), las=2)
 ```
-**"Figure 35.Graphic of cuisine"**
+<center>**Figure 35.Graphic of cuisine**</center>
 <br>
 <br>
 ```{r}
@@ -647,12 +647,12 @@ In Fig. 36 we observe the boxplot of the occurences for each cuisine. There are 
 ```{r}
 outvals <- boxplot(t$freq)$out
 ```
-**"Figure 36. Boxplot of cuisine"**
+<center>**Figure 36. Boxplot of cuisine**</center>
 ```{r}
 t[which(t$freq %in% outvals),]
 ```
 
-**Figure 37. Kind of cuisine of the outliers in Fig. 36**
+<center>**Figure 37. Kind of cuisine of the outliers in Fig. 36**</center>
 <br>
 <br>
 <hr>
@@ -705,7 +705,7 @@ places$city <- as.factor(places$city)
 sprintf("Number of places: %s",nlevels(places$city))  # 
 levels(places$city)
 ```
-**Figure 39. Levels for the 'city' variable after filling missing data with *revgeo* **
+<center>**Figure 39. Levels for the 'city' variable after filling missing data with *revgeo* **</center>
 
 We observe in Fig. 39 that we have same cities with different labels, we we will correct them as we did before.
 ```{r}
